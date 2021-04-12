@@ -1,0 +1,10 @@
+Alimento mais caro: Fondue
+Eletrodoméstico mais barato: Torradeira
+Vestuário:
+Camiseta - 10
+Calca - 5
+Bermuda - 16
+Casaco - 8
+Moleton - 36
+Gravata - 78
+Camiseta - 4
