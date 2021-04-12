@@ -1,0 +1,49 @@
+a) double varDouble = (int) varDouble;
+int -> double
+casting -> atribuição
+
+b) double resultDouble = intX + intY; 
+double
+atribuição
+
+c) double resultDouble = intX + floatY; 
+float -> double
+promoção numérica -> atribuição
+
+d) double resultDouble = floatX + floatZ; 
+float -> double
+atribuição
+
+e) float resultFloat = intX + doubleZ;
+double -> erro
+promoção numérica -> erro
+
+f) float resultFloat = (float) intX + doubleZ; 
+float -> double -> erro
+casting -> promoção numérica
+
+g) float resultFloat = (float) doubleZ + intX; 
+float -> float
+casting -> promoção numérica
+
+h) float resultFloat = (float) doubleZ + doubleX; 
+float -> double -> erro
+casting -> promoção numérica -> erro
+
+i) float resultFloat = (float) doubleZ + (float) doubleX; 
+float -> float
+casting -> casting
+
+j) String minhaString = “Meu double é ” + doubleZ; 
+string
+String
+
+k) int resultInt = Integer.parseInt(intX);
+erro
+
+l) long resultLong = Long.parseLong(stringX); 
+long
+String
+
+m) double resultDouble = objetoDoubleX + objetoDoubleY;
+unboxing
