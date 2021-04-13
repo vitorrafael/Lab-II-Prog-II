@@ -1,4 +1,4 @@
-package recursao;
+package recursao.prog2;
 
 public class Main {
 	
