@@ -1,1 +1,1 @@
-"# Laborat¢rio II & Programaá∆o II" 
+# Laborat√≥rio II & Programa√ß√£o II"
