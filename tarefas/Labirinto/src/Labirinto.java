@@ -5,14 +5,9 @@ import java.util.Scanner;
 
 public class Labirinto {
 
-	private final char FINAL_LABIRINTO = 'D';
-	private final char PAREDE = 'X';
-	private final char VISITADO = 'V';
-
-	public static void main(String[] args) throws IOException {
-		Labirinto labirinto = new Labirinto();
-		System.out.println(labirinto.labirinto());
-	}
+	private final char WALL = 'X';
+	private final char EXIT = 'D';
+	private final char VISITED = 'V';
 
 	public char[][] carregaLabirinto(String fileName) throws IOException {
 		FileReader fileReader = new FileReader(fileName);
@@ -24,7 +19,11 @@ public class Labirinto {
 		char[][] labyrinth = new char[lines][columns];
 
 		for (int i = 0; i < lines; i++) {
-			labyrinth[i] = bufferedReader.readLine().toCharArray();
+			String labyrinthLine = bufferedReader.readLine();
+
+			for (int j = 0; j < columns; j++) {
+				labyrinth[i][j] = labyrinthLine.charAt(j);
+			}
 		}
 
 		bufferedReader.close();
@@ -32,36 +31,46 @@ public class Labirinto {
 	}
 
 	public boolean labirinto() throws IOException {
-		Scanner scanner = new Scanner(System.in);
-
-		System.out.println("Digite o nome arquivo do labirinto: ");
-		String fileName = scanner.nextLine();
-
-		char[][] labirinto = this.carregaLabirinto(fileName);
-		return this.labirinto(labirinto, 0, 0);
+		String fileName = this.getLabyrinthFileName();
+		char[][] labyrinth = this.carregaLabirinto(fileName);
+		return this.labirinto(labyrinth, 0, 0);
 	}
 
-	private boolean labirinto(char[][] labirinto, int i, int j) {
-		if (labirinto[i][j] == FINAL_LABIRINTO) return true;
-		labirinto[i][j] = VISITADO;
-		
-		boolean achouSaida = false;
-		if (!achouSaida && i + 1 < labirinto.length && labirinto[i + 1][j] != PAREDE && labirinto[i + 1][j] != VISITADO) {
-			achouSaida = labirinto(labirinto, i + 1, j);
-		}
-		
-		if (!achouSaida && i - 1 >= 0 && labirinto[i - 1][j] != PAREDE && labirinto[i - 1][j] != VISITADO) {
-			achouSaida = labirinto(labirinto, i - 1, j);
+	private boolean labirinto(char[][] labyrinth, int i, int j) {
+		if ((i >= labyrinth.length || i < 0) || (j >= labyrinth[i].length || j < 0))
+			return false;
+		if (labyrinth[i][j] == VISITED || labyrinth[i][j] == WALL)
+			return false;
+
+		if (labyrinth[i][j] == EXIT)
+			return true;
+
+		labyrinth[i][j] = VISITED;
+
+		// At each position, we try to go DOWN, UP, RIGHT, LEFT to find the exit
+		// (destination)
+		int[][] nextPossiblePaths = new int[][] { { i + 1, j }, { i - 1, j }, { i, j + 1 }, { i, j - 1 } };
+
+		boolean foundExit = false;
+		for (int[] nextPossiblePath : nextPossiblePaths) {
+			int nextI = nextPossiblePath[0], nextJ = nextPossiblePath[1];
+			foundExit = labirinto(labyrinth, nextI, nextJ);
+
+			if (foundExit)
+				break;
 		}
 
-		if (!achouSaida && j + 1 < labirinto[0].length && labirinto[i][j + 1] != PAREDE && labirinto[i][j + 1] != VISITADO) {
-			achouSaida = labirinto(labirinto, i, j + 1);
-		}
-		
-		if (!achouSaida && j - 1 >= 0 && labirinto[i][j - 1] != PAREDE && labirinto[i][j - 1] != VISITADO) {
-			achouSaida = labirinto(labirinto, i, j - 1);
-		}
+		return foundExit;
+	}
 
-		return achouSaida;
+	private String getLabyrinthFileName() {
+		Scanner scanner = new Scanner(System.in);
+
+		System.out.println("Digite o nome do arquivo do labirinto: ");
+		String fileName = scanner.nextLine();
+
+		scanner.close();
+
+		return fileName;
 	}
 }
